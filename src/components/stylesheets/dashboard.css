@@ -1,0 +1,28 @@
+div.card-custom {
+  width: 40%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card-header2{
+  /* background-color:rgba(1, 167, 167, 0.863); */
+  /* background: -webkit-linear-gradient(#27ef9f, #0db8de); */
+  background-image: linear-gradient(to right, rgb(39,239,159) , rgb(13,184,222));
+  color: white;
+
+}
+div.card-body2{
+  background: #1a2226;
+  color: white;
+  height: 100px;
+  padding-left: 20px;
+  padding-top: 10px;
+  font-weight: bold;
+}
+.navbar-nav {
+  margin-left: auto;
+  padding-right: 50px;
+}
+.user{
+  padding-right: 10pt;
+}
