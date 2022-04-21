@@ -7,73 +7,33 @@ import * as crypto from "crypto";
 //Component imports
 import firebase from "../Firebase";
 import Loading from "./Loading";
-
+import { supabase } from "../Supabase";
 //Image imports
 import HutLogo from "../images/hut_logo.svg"
 
 
 function Login() {
     const [loading, setLoading] = useState(false);
-    const [handle, setHandle] = useState("");
     const [password, setPassword] = useState("");
-    const [errorText, setErrText] = useState("");
+    const [name, setName] = useState("");
+    const [data, setData] = useState("");
     const [redirect, setRedirect] = useState(false);
-    const { addToast } = useToasts();
-    const ref = firebase.firestore().collection("UserCreds");
-    let myStorage = window.localStorage;
 
-    useEffect(() => {
-        myStorage.clear();
-    }, [myStorage]);
-
-    const resetForm = () => {
-        setPassword("");
-        setHandle("");
-    };
-
-    const isHandlePresent = async (handle) => {
-        const docs = await ref.doc(handle).get();
-        if (docs.exists) return { flag: true, data: docs.data() };
-        return { flag: false, data: undefined };
-    };
-
-    const checkCred = () => {
-        if (handle === "") return;
-        setLoading(true);
-
-        isHandlePresent(handle).then((result) => {
-            const { flag, data } = result;
-            if (flag === true) {
-                const hmac = crypto.createHmac("sha256", process.env.REACT_APP_HMAC_ID);
-                //passing the data to be hashed
-                const data1 = hmac.update(password);
-                //Creating the hmac in the required format
-                const gen_hmac = data1.digest("hex");
-                
-                if (data["Password"] === gen_hmac) {
-                    setLoading(false);
-                    myStorage.setItem("handle", handle);
-                    myStorage.setItem("Username", data.Username);
-                    setRedirect(true);
-
-                    addToast(`Welcome, ${handle}. Your login was successful!`, { appearance: "success", autoDismissTimeout: 3000 });
-
-                } else {
-                    setErrText("** Invalid Handle or Password");
-                    addToast(`You entered invalid credentials. Kindly re-check.`, { appearance: "error" });
-
-                    resetForm();
-                }
-            } else {
-                setErrText("** Invalid Handle or Password");
-                addToast(`You entered invalid credentials. Kindly re-check.`, { appearance: "error" });
-
-                resetForm();
-            }
-            setLoading(false);
-        });
-    };
-
+    
+    const handle = async event => {
+        event.preventDefault();
+        var name= event.target.name.value
+        var password= event.target.u_pass.value
+        const { data, error } = await supabase.from('users').select().eq("username", name, "password", password)
+        setData(data)
+        if(data.length<=0){
+            alert("User not found")
+        }
+        else{
+            window.localStorage.setItem("logged", "true")
+            window.location.href = '/dashboard'
+        }
+    }
     if (loading) return <Loading />;
     else
         return (
@@ -100,21 +60,18 @@ function Login() {
                                 <form
                                     name="login_form"
                                     id="login_form"
-                                    onSubmit={(event) => {
-                                        event.preventDefault();
-                                        checkCred();
-                                    }}
+                                    onSubmit={handle}
                                 >
                                     <div className="form-group">
                                         <label className="form-control-label">HANDLE</label>
                                         <input
                                             type="text"
                                             id="u_name"
-                                            name="u_name"
-                                            value={handle}
+                                            name="name"
+                                            value={name}
                                             size="20"
                                             autoComplete="off"
-                                            onChange={(event) => setHandle(event.target.value)}
+                                            onChange={(event) => setName(event.target.value)}
                                             className="form-control"
                                             required
                                         />
@@ -134,7 +91,6 @@ function Login() {
                                     </div>
                                     <div className="col-lg-12 loginbttm">
                                         <div className="col-lg-12 login-btm login-text">
-                                            {errorText}
                                         </div>
                                         <Link to="/forgotpassword">
                                             <div className="col-lg-12 login-btm login-text pb-3">

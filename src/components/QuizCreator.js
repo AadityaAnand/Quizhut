@@ -12,11 +12,6 @@ function QuizCreator() {
 
     let myStorage = window.localStorage;
 
-    useEffect(() => {
-        if (myStorage.getItem("handle") === null) {
-            setRedirectHome(true);
-        }
-    }, [myStorage]);
 
     const createQuiz = () => {
         //create the quiz in a new FireStore collection

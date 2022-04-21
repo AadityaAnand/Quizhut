@@ -18,15 +18,8 @@ function QuizSelector() {
     const Users = firebase.firestore().collection("UserCreds");
 
     let qIDS = [];
-    useEffect(() => {
-        if (myStorage.getItem("handle") === null) {
-            setRedirectHome(true);
-        } else {
-            setLoading(true);   //started loading data
-            setData(myStorage.getItem("handle"))
-        }
+  
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [myStorage]);
 
     const setData = async (handle) => {
         await Users.doc(handle)

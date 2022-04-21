@@ -26,18 +26,14 @@ function QuizBuilder() {
     const [questionNumber, setQuestionNumber] = useState(1);
 
     useEffect(() => {
-        if (myStorage.getItem("handle") === null) {
-            setRedirectHome(true);
-        } else if (myStorage.getItem("qID") === null) {
-            setRedirectBack(true);
-        } else {
+        
             setHandle(myStorage.getItem("handle"));
             setQuizID(myStorage.getItem("qID"));
             setQuizName(myStorage.getItem("qName"));
             setQuizLength(myStorage.getItem("qLength"));
             setQuizDuration(myStorage.getItem("qDuration"));
             document.getElementById("uploadSetBtn").style.display = "none";
-        }
+        
     }, [myStorage]);
 
     const nextQuestion = () => {

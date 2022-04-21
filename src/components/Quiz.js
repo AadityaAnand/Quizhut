@@ -46,25 +46,6 @@ function Quiz(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [quizDuration]);
 
-    useEffect(() => {
-        //to get the quiz's metadata
-        if (myStorage.getItem("handle") === null) {
-            setRedirectHome(true);
-        } else if (
-            props.location.state === undefined ||
-            props.location.state.qID === undefined ||
-            props.location.state.qID === null
-        ) {
-            setRedirectBack(true);
-        } else {
-            setHandle(myStorage.getItem("handle"));
-            setUsername(myStorage.getItem("Username"));
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-            quizID = props.location.state.qID;
-            getData();
-        }
-    }, []);
-
     const getData = () => {
 
         quizMeta

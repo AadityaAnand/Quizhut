@@ -9,22 +9,17 @@ function DashBoard() {
     const [redirectReport, setRedirectReport] = useState(false);
     // const [redirectFeedback, setredirectFeedback] = useState(false);
 
-    let myStorage = window.localStorage;
 
-    useEffect(() => {
-        if (myStorage.getItem("handle") === null) {
-            setRedirectHome(true);
-        }
-    }, [myStorage]);
+    
 
     if (redirectSet) return <Redirect to="/createquiz" />;
     if (redirectTake) return <Redirect to="/findquiz" />;
     if (redirectReport) return <Redirect to="/myquizzes" />;
     //if (redirectFeedback) return <Redirect to="/Feedback" />;
-
+    console.log(localStorage["logged"])
     return (
         <div>
-            {redirectHome === true ? (
+            {window.localStorage.getItem("logged") !== "true" ? (
                 <Redirect to="/signin" />
             ) : (
                 <div>

@@ -15,14 +15,9 @@ function QuizFinder() {
     const [title, setTitle] = useState("");
     const { addToast } = useToasts();
 
-    let myStorage = window.localStorage;
     const quizDB = firebase.firestore().collection("QuizDB");
 
-    useEffect(() => {
-        if (myStorage.getItem("handle") === null) {
-            setRedirectHome(true);
-        }
-    }, [myStorage]);
+   
 
     const findQuiz = () => {
         //to check if a quiz with the given quizID exists
