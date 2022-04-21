@@ -27,7 +27,7 @@ function Register() {
         .from('users')
         .upsert({ username: name, email: email, password: password })
         if(error){
-            console.log(error)
+            console.log(error);
         }
         else{
             alert("Success")
